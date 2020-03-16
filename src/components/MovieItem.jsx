@@ -1,12 +1,14 @@
 import React from "react";
-
-const MovieItem = (props) => {
-  const { movie, removeMovie, addMovieToWillWatch} = props;
+class MovieItem extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      willWatch: false
+    };
+  }
+  render(){
+    const { movie, removeMovie, addMovieToWillWatch, removeMovieFromWillWatch} = this.props;
     return (
-        // <div>
-        //   <p>{movie.title}</p>
-        //   <button onClick={removeMovie.bind(null, movie)}>Delete</button>
-        // </div>
         <div className="card">
         <img
           className="card-img-top"
@@ -18,27 +20,35 @@ const MovieItem = (props) => {
           <h6 className="card-title">{movie.title}</h6>
           <div className="d-flex justify-content-between align-items-center">
             <p className="mb-0">Rating: {movie.vote_average}</p>
-            <button type="button" className="btn btn-secondary"
-            onClick={addMovieToWillWatch.bind(null, movie)}>
-              Will Watch
+            {this.state.willWatch ? (
+              <button type="button" className="btn btn-success"
+              onClick={() =>{
+                this.setState({
+                  willWatch: false
+                });
+                removeMovieFromWillWatch(movie);
+              }}>
+                Unwatch
+              </button>
+            ) : (
+              <button type="button" className="btn btn-secondary"
+                onClick={() =>{
+                  this.setState({
+                    willWatch: true
+                  });
+                  addMovieToWillWatch(movie);
+                }}>
+                Watch
             </button>
+            )}
+            
           </div>
           <button type="button" className="btn btn-danger"
           onClick={removeMovie.bind(null, movie)}>Delete</button>
         </div>
       </div>
     );
-};
+  }
+}
 
 export default MovieItem;
-
-
-// MovieListWillWatch
-// <h4>Will Watch: movies</h4>
-// <ul className="list-group">
-//     <li className="list-group-item">
-//       <div className="d-flex justify-content-between">
-//       </div>
-//     </li>
-//   ))}
-// </ul>
